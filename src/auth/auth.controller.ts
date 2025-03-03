@@ -7,6 +7,7 @@ export class AuthController {
 
   @Post('sign-in')
   async signIn(@Body() credentials: { email: string; password: string }) {
+    console.log(credentials);
     return this.authService.signInAndSetSession(
       credentials.email,
       credentials.password,

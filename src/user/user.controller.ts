@@ -1,25 +1,18 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { UserService } from './user.service';
+import { User } from './types';
 
 @Controller('user')
 export class UserController {
   constructor(@Inject(UserService) private readonly userService: UserService) {}
 
-  @Get('all')
-  getAllUsers(): string[] {
+  @Get()
+  getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
 
   @Get(':id')
-  getUser(@Param('id') id: string): string[] {
-    const index = parseInt(id);
-    return this.userService.getUser(index);
-  }
-
-  @Post()
-  createUser(@Body() body: { name: string }): string {
-    const name = body.name;
-    this.userService.create(name);
-    return 'user created';
+  getUser(@Param('id') id: number): Promise<User | null> {
+    return this.userService.getUser(id);
   }
 }
